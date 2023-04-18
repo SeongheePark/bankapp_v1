@@ -1,0 +1,47 @@
+[33mcommit e9fa0f7999d9ae62dc42880401c45dae925b7cbf[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Tue Apr 18 12:35:36 2023 +0900
+
+    회원가입 트랜잭션 처리까지
+
+[33mcommit 10b6a2388901cd05e9374880fb6828132eecda64[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Tue Apr 18 10:31:15 2023 +0900
+
+    exception handler
+
+[33mcommit 15fae9b8fb297b5ac88332385d1f7439672264d2[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Mon Apr 17 15:47:43 2023 +0900
+
+    화면 주소 연결 및 페이지 구성
+
+[33mcommit 963c73b85f369bc21114d806ebdc97a64c165dda[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Mon Apr 17 12:31:15 2023 +0900
+
+    기본 화면 구성 1
+
+[33mcommit 76a14a13922b62eacf0b4f52e3485f60beb3a097[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Mon Apr 17 11:14:08 2023 +0900
+
+    MyBatis 설정
+
+[33mcommit 3a5667d0d022634bfba4a160aa126ea88efcfe36[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Fri Apr 14 14:45:52 2023 +0900
+
+    h2 초기 스키마 설정 및 초기 데이터 설정 완료
+
+[33mcommit 02660a6825f30d62b5950d72eb05245a19b78adb[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Fri Apr 14 14:22:55 2023 +0900
+
+    데이터 모델링 처리
+
+[33mcommit 2ec25a057619d5e61d9d121b180cde4f9d57b4fc[m
+Author: SeongheePark <sungheepppp@gmail.com>
+Date:   Fri Apr 14 10:20:42 2023 +0900
+
+    환경설정

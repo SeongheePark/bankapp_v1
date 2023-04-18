@@ -28,12 +28,9 @@ public class AccountController {
 	 * @return 목록 페이지 이동
 	 */
 	@GetMapping({ "/list", "/" })
-	public void list() {
-		// todo 예외 test (삭제예정)
-		// throw new CustomRestfullException("인증되지 않은 사용자 입니다",
-		// HttpStatus.UNAUTHORIZED);
-		throw new CustomPageException("페이지를 찾을 수 없습니다", HttpStatus.NOT_FOUND);
-		// return "/account/list";
+	public String list() {
+		
+		 return "/account/list";
 	}
 
 	// 출금페이지
