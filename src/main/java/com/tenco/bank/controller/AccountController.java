@@ -1,24 +1,22 @@
 package com.tenco.bank.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.tenco.bank.handler.exception.CustomPageException;
-import com.tenco.bank.handler.exception.CustomRestfullException;
+import com.tenco.bank.handler.exception.UnAuthorizedException;
+import com.tenco.bank.repository.model.User;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController {
 
-	// todo
-	// 계좌 목록 페이지
-	// 입금 페이지
-	// 출금 페이지
-	// 이체 페이지
-	// 계좌 상세보기 페이지
-	// 계좌 생성 페이지
+	@Autowired
+	private HttpSession session;
 
 	// http://localhost:8080/account/list
 	// http://localhost:8080/account/
@@ -29,8 +27,12 @@ public class AccountController {
 	 */
 	@GetMapping({ "/list", "/" })
 	public String list() {
-		
-		 return "/account/list";
+		// 인증검사처리 (인증된 사용자만 들어올 수 있도록)
+		User principal = (User) session.getAttribute("principal");
+		if (principal == null) {
+			throw new UnAuthorizedException("인증된 사용자가 아닙니다", HttpStatus.UNAUTHORIZED);
+		}
+		return "/account/list";
 	}
 
 	// 출금페이지

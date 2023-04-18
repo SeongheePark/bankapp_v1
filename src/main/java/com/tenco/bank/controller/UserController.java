@@ -88,9 +88,16 @@ public class UserController {
 		
 		// 서비스 호출 - 세션에 저장(사용자 정보) todo 
 		User principal = userService.signIn(signInFormDto);
+		principal.setPassword(null);
 		session.setAttribute("principal", principal);
 		
 		return "/account/list";
+	}
+	
+	@GetMapping("/logout")
+	public String logout() {
+		session.invalidate();
+		return "redirect:/user/sign-in";
 	}
 
 }
