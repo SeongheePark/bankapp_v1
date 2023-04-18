@@ -13,8 +13,11 @@ public class TestController {
 		// viewResolver 동작
 		// prefix: /WEB-INF/view/
 		// suffix: .jsp
-		
-		
 		return "layout/main"; 
+	}
+	
+	@GetMapping("/home")
+	public String home() {
+		return "layout/home";
 	}
 }

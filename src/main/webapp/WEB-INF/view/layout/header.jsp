@@ -32,7 +32,7 @@
 		</button>
 		<div class="collapse navbar-collapse" id="collapsibleNavbar">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="/test/home">Home</a></li>
 				<li class="nav-item"><a class="nav-link" href="/user/sign-in">로그인</a></li>
 				<li class="nav-item"><a class="nav-link" href="/user/sign-up">회원가입</a></li>
 			</ul>
