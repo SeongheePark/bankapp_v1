@@ -92,7 +92,7 @@ public class UserController {
 		principal.setPassword(null);
 		session.setAttribute(Define.PRINCIPAL, principal);
 		
-		return "/account/list";
+		return "redirect:/account/list";
 	}
 	
 	@GetMapping("/logout")

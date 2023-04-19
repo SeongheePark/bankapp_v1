@@ -14,5 +14,9 @@ public interface AccountRepository {
 	public List<Account> findAll();
 	public Account findById(int id);
 	
+	// 추가
 	public List<Account> findByUserId(Integer userId); 
+	
+	// 추가 - 계좌번호로 찾는 기능
+	public Account findByNumber(String number);
 }

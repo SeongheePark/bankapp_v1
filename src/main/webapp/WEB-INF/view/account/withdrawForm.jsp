@@ -4,7 +4,7 @@
 	<h2>출금 페이지 (인증)</h2>
 	<h5>어서오세요! 환영합니다</h5>
 	<div class="bg-light p-md-5 h-75">
-		<form action="#" method="post">
+		<form action="/account/withdraw-proc" method="post">
 			<div class="form-group">
 				<label for="amount">출금 금액:</label> 
 				<input type="text" class="form-control" placeholder="출금 금액을 입력하세요" id="amount" name="amount">
