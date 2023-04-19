@@ -6,6 +6,6 @@ import lombok.Data;
 public class DepositFormDto {
 	
 	private Long amount;
-	private String wAccountNumber;
-	private String wAccountPassword;
+	private String dAccountNumber;
+	private String dAccountPassword;
 }
