@@ -1,10 +1,13 @@
 package com.tenco.bank.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.tenco.bank.dto.saveFormDto;
 import com.tenco.bank.handler.exception.CustomRestfullException;
 import com.tenco.bank.handler.exception.UnAuthorizedException;
+import com.tenco.bank.repository.model.Account;
 import com.tenco.bank.repository.model.User;
 import com.tenco.bank.service.AccountService;
+import com.tenco.bank.utils.Define;
 
 @Controller
 @RequestMapping("/account")
@@ -32,12 +37,22 @@ public class AccountController {
 	 * @return 목록 페이지 이동
 	 */
 	@GetMapping({ "/list", "/" })
-	public String list() {
+	public String list(Model model) {
 		// 인증검사처리 (인증된 사용자만 들어올 수 있도록)
-		User principal = (User) session.getAttribute("principal");
+		User principal = (User) session.getAttribute(Define.PRINCIPAL);
 		if (principal == null) {
 			throw new UnAuthorizedException("로그인 먼저 해주세요", HttpStatus.UNAUTHORIZED);
 		}
+		
+		
+		List<Account> accountList = accountService.readAccountList(principal.getId());
+		if(accountList.isEmpty()) {
+			model.addAttribute("accountList",null);			
+		} else {
+			model.addAttribute("accountList",accountList);						
+		}
+		// view 화면으로 데이터를 내려 주는 기술
+		// Model과 ModelAndView(동적으로 결과에 따라 다른 페이지를 띄워야 할 때) 
 		return "/account/list";
 	}
 
@@ -63,7 +78,7 @@ public class AccountController {
 	@GetMapping("/save")
 	public String save() {
 		// 인증 검사
-		User principal = (User) session.getAttribute("principal");
+		User principal = (User) session.getAttribute(Define.PRINCIPAL);
 		if (principal == null) {
 			throw new UnAuthorizedException("로그인 먼저 해주세요", HttpStatus.UNAUTHORIZED);
 		}
@@ -79,7 +94,7 @@ public class AccountController {
 	 */
 	@PostMapping("/save-proc")
 	public String saveProc(saveFormDto saveFormDto) {
-		User user = (User) session.getAttribute("principal");
+		User user = (User) session.getAttribute(Define.PRINCIPAL);
 		if (user == null) {
 			throw new UnAuthorizedException("로그인 먼저 해주세요", HttpStatus.UNAUTHORIZED);
 		}
