@@ -3,19 +3,23 @@ package com.tenco.bank.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tenco.bank.dto.DepositFormDto;
 import com.tenco.bank.dto.TransferFormDto;
 import com.tenco.bank.dto.WithdrawFormDto;
 import com.tenco.bank.dto.saveFormDto;
+import com.tenco.bank.dto.response.HistoryDto;
 import com.tenco.bank.handler.exception.CustomRestfullException;
 import com.tenco.bank.handler.exception.UnAuthorizedException;
 import com.tenco.bank.repository.model.Account;
@@ -191,14 +195,28 @@ public class AccountController {
 
 		// 서비스 호출
 		accountService.createAccount(saveFormDto, user.getId());
-
 		return "redirect:/account/list";
 	}
 
 	// 계좌 상세보기 페이지
-	@GetMapping("/detail")
-	public String detail() {
-		return "";
+	@GetMapping("/detail/{id}")
+	public String detail(@PathVariable Integer id,
+			@RequestParam(name = "type", defaultValue = "all", required = false) String type, Model model) {
+		User principal = (User) session.getAttribute(Define.PRINCIPAL);
+		// 인증 처리
+		if (session.getAttribute(Define.PRINCIPAL) == null) {
+			throw new CustomRestfullException("로그인 먼저 해주세요", HttpStatus.UNAUTHORIZED);
+		}
+		System.out.println(type);
+		Account account = accountService.readAccount(id);
+		List<HistoryDto> historyList = accountService.readHistoryListByAccount(type, id);
+		// 화면 구성에 필요한 데이터
+		// 소유자 이름, 계좌번호(1개), 잔액, 거래 내역
+		model.addAttribute("principal", principal);
+		model.addAttribute("account", account);
+		model.addAttribute("historyList", historyList);
+
+		return "/account/detail";
 	}
 
 }
