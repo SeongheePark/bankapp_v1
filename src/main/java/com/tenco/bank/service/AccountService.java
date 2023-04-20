@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tenco.bank.dto.DepositFormDto;
+import com.tenco.bank.dto.TransferFormDto;
 import com.tenco.bank.dto.WithdrawFormDto;
 import com.tenco.bank.dto.saveFormDto;
 import com.tenco.bank.handler.exception.CustomRestfullException;
@@ -120,6 +121,53 @@ public class AccountService {
 		int resultRowCount = historyRepository.insert(history);
 		if (resultRowCount != 1) {
 			throw new CustomRestfullException("정상 처리 되지 않았습니다", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	// 이체 기능 만들기
+	// 출금 계좌 존재 여부 확인 - select query
+	// 입금 계좌 존재 여부 확인 - select query
+	// 출금 계좌 본인 소유 확인 - 1번에서 뽑은 E = session 값 비교
+	// 출금 계좌 비번 확인 - 1번에서 뽑은 E = Dto 비교
+	// 출금 계좌 잔액 여부 확인 - 1번에서 뽑은 E = Dto 비교
+	// 출금 계좌 잔액 변경 - update query
+	// 입금 계좌 잔액 변경 - update query
+	// 거래 내역 저장 - insert
+	@Transactional
+	public void updateAccountTransfer(TransferFormDto transferFormDto, Integer principalId) {
+		// 출금 계좌 존재 여부 확인
+		Account withdrawAccountEntity = accountRepository.findByNumber(transferFormDto.getWAccountNumber());
+		if (withdrawAccountEntity == null) {
+			throw new CustomRestfullException("출금 계좌가 존재하지 않습니다", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		// 입금 계좌 존재 여부 확인
+		Account depositAccountEntity = accountRepository.findByNumber(transferFormDto.getDAccountNumber());
+		if (depositAccountEntity == null) {
+			throw new CustomRestfullException("입금 계좌가 존재하지 않습니다", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		// 출금 계좌 본인 소유 확인
+		withdrawAccountEntity.checkOwner(principalId);
+		// 출금 계좌 비밀번호 확인
+		withdrawAccountEntity.checkPassword(transferFormDto.getWAccountPassword());
+		// 출금 계좌 잔액 여부 확인
+		withdrawAccountEntity.checkBalance(transferFormDto.getAmount());
+		// 출금 계좌 잔액 변경 ( 객체 상태값 변경 - 계좌 잔액 수정 처리)
+		withdrawAccountEntity.withdraw(transferFormDto.getAmount());
+		accountRepository.updateById(withdrawAccountEntity); // 변경된 객체 상태값으로 update 처리
+		// 입금 계좌 잔액 변경
+		depositAccountEntity.deposit(transferFormDto.getAmount());
+		accountRepository.updateById(depositAccountEntity);
+		// 거래 내역 저장
+		History history = new History();
+		history.setAmount(transferFormDto.getAmount());
+		history.setWAccountId(withdrawAccountEntity.getId());
+		history.setDAccountId(depositAccountEntity.getId());
+		history.setWBalance(withdrawAccountEntity.getBalance());
+		history.setDBalance(depositAccountEntity.getBalance());
+
+		int resultRowCount = historyRepository.insert(history);
+		if (resultRowCount != 1) {
+			throw new CustomRestfullException("이체가 정상처리 되지 않았습니다", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
