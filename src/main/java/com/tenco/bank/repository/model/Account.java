@@ -1,6 +1,7 @@
 package com.tenco.bank.repository.model;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 
 import org.springframework.http.HttpStatus;
 
@@ -47,6 +48,12 @@ public class Account {
 		if (this.balance < amount) {
 			throw new CustomRestfullException("출금 잔액이 부족합니다", HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	public String formatBalance() {
+		DecimalFormat df = new DecimalFormat("#,###");
+		String formatNumber = df.format(balance);
+		return formatNumber + "원";
 	}
 	
 }

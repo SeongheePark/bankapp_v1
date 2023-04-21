@@ -12,7 +12,7 @@
 	<h5>어서오세요! 환영합니다</h5>
 	<div class="bg-light p-md-5 h-75">
 		<div class="user--box">
-			${principal.username}님 계좌<br> 계좌번호: ${account.number}<br> 잔액: ${account.balance}원
+			${principal.username}님 계좌<br> 계좌번호: ${account.number}<br> 잔액: ${account.formatBalance()}
 		</div>
 		<br>
 		<div>
@@ -37,8 +37,8 @@
 						<th>${history.formatCreateAt()}</th>
 						<th>${history.sender}</th>
 						<th>${history.receiver}</th>
-						<th>${history.amount}</th>
-						<th>${history.formatBalance()}</th>
+						<th>${history.formatMoney(history.amount)}</th>
+						<th>${history.formatMoney(history.balance)}</th>
 					</tr>
 				</c:forEach>
 			</tbody>

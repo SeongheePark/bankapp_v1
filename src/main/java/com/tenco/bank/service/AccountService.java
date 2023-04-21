@@ -60,6 +60,7 @@ public class AccountService {
 	 * @param id (account_id)
 	 * @return 입금, 출금, 입출금 거래내역 
 	 */
+	@Transactional
 	public List<HistoryDto> readHistoryListByAccount(String type, Integer id){
 		List<HistoryDto> historyDtos = historyRepository.findByIdHistoryType(type, id);
 		historyDtos.forEach(e -> {
